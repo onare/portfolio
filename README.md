@@ -1,7 +1,7 @@
 <div align="center">
     <a href="https://onadev.net"><h1 align="center">onadev.net</h1></a>
 
-My personal website, built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), [Upstash](https://upstash.com?ref=chronark.com), [Contentlayer](https://www.contentlayer.dev/) and deployed to [Vercel](https://vercel.com/) with the template from [Chronark](https://chronark.com)
+My personal website, built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), [Upstash](https://upstash.com?ref=onare), [Contentlayer](https://www.contentlayer.dev/) and deployed to [Vercel](https://vercel.com/) with the template from [Chronark](https://chronark.com)
 
 </div>
 
@@ -14,12 +14,12 @@ My personal website, built with [Next.js](https://nextjs.org/), [Tailwind CSS](h
 
 
 ```sh-session
-git clone https://github.com/chronark/chronark.com.git
-cd chronark.com
+git clone https://github.com/onare/portfolio.git
+cd portfolio
 ```
 
 
-Create a `.env` file similar to [`.env.example`](https://github.com/chronark/chronark.com/blob/main/.env.example).
+Create a `.env` file similar to [`.env.example`](https://github.com/onare/portfolio/blob/main/.env.example).
 
 Then install dependencies and run the development server:
 ```sh-session
