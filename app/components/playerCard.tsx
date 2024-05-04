@@ -2,6 +2,7 @@
 
 import {
   Autocomplete,
+  Box,
   Button,
   Card,
   CardActions,
@@ -168,18 +169,33 @@ export function PlayerCard(props: any) {
                 </FormGroup>
               </div>
             </form>
+            {selectedPlayer?.llenado === 1 && (
+              <Box>
+                <Typography
+                  variant="body1"
+                  align="center"
+                  sx={{ color: "#3cff3cc7", mt: "8px", fontWeight: "400" }}
+                >
+                  Tu asistencia ya fue REGISTRADA.
+                </Typography>
+              </Box>
+            )}
           </CardContent>
           <CardActions className="flex justify-center p-2">
-            <Button
-              variant="contained"
-              className="text-zinc-100"
-              disabled={selectedPlayer?.llenado === 1 || !selectedPlayer?.label}
-              onClick={handleSubmit}
-            >
-              {selectedPlayer?.llenado === 1
-                ? "Assistencia Enviada"
-                : "Enviar Asistencia"}
-            </Button>
+            {!selectedPlayer?.llenado && (
+              <Button
+                variant="contained"
+                className="text-zinc-100"
+                disabled={
+                  selectedPlayer?.llenado === 1 || !selectedPlayer?.label
+                }
+                onClick={handleSubmit}
+              >
+                {selectedPlayer?.llenado === 1
+                  ? "Assistencia Enviada"
+                  : "Enviar Asistencia"}
+              </Button>
+            )}
           </CardActions>
         </Card>
       </div>

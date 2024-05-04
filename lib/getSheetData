@@ -1,11 +1,10 @@
 import { google } from "googleapis";
-import keys from "../gs_key.json";
 
 export default async function getSheetData() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
-      client_email: keys.client_email,
-      private_key: keys.private_key,
+      client_email: process.env.GOOGLE_SHEET_EMAIL,
+      private_key: process.env.GOOGLE_SHEET_PK,
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });

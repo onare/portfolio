@@ -1,6 +1,5 @@
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
-import keys from "../../gs_key.json";
 
 export default async function assistSubmit(req: NextRequest) {
   if (req.method !== "POST") {
@@ -13,8 +12,8 @@ export default async function assistSubmit(req: NextRequest) {
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
-        client_email: keys.client_email,
-        private_key: keys.private_key,
+        client_email: process.env.GOOGLE_SHEET_EMAIL,
+        private_key: process.env.GOOGLE_SHEET_PK,
       },
       scopes: [
         "https://www.googleapis.com/auth/drive",
