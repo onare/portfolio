@@ -6,7 +6,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Divider,
   FormControlLabel,
   FormGroup,
@@ -18,17 +17,21 @@ import {
 import { format } from "date-fns";
 import { useState } from "react";
 
-export function PlayerCard(props) {
+export function PlayerCard(props: any) {
   const { players, events, eventsDetails } = props;
-
-  const [formData, setFormData] = useState([...players]);
-  const [selectedPlayer, setSelectedPlayer] = useState("");
-
   const currentDay = format(new Date(), "EEEE");
-  const eventsDay = [...events].filter((e) => e.day === "Saturday");
+  const eventsDay = [...events].filter((e) => e.day === currentDay);
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
+
+  const [formData, setFormData] = useState([
+    ...players.map((player: any) => {
+      return { ...player, eventsDay: eventList || [] };
+    }),
+  ]);
+
+  const [selectedPlayer, setSelectedPlayer] = useState({});
 
   const handleChangeForm = (input: String, value: String, checked: Boolean) => {
     let newFormData = {};
@@ -37,7 +40,7 @@ export function PlayerCard(props) {
 
     if (input === "events") {
       const newEvents = [];
-      const data = formData?.find((fd) => fd.label === selectedPlayer);
+      const data = formData?.find((fd) => fd.label === selectedPlayer?.label);
       const check = data.events?.findIndex((e) => e.e === value);
       if (!check) {
         newEvents.push({ e: value, a: checkedChar });
@@ -51,10 +54,48 @@ export function PlayerCard(props) {
     }
 
     const newState = [...formData].map((data) =>
-      data.label === selectedPlayer ? newFormData : data
+      data.label === selectedPlayer?.label ? newFormData : data
     );
 
     setFormData(newState);
+    setSelectedPlayer({
+      ...newState.find((p) => p.label === selectedPlayer?.label),
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedPlayer) return;
+
+    const newDataEvents: string[] = [];
+
+    const today = format(new Date(), "dd/MM/yyyy");
+
+    selectedPlayer?.events?.forEach((event: any) => {
+      newDataEvents.push([
+        selectedPlayer.label.toString(),
+        event.e.toString(),
+        event.a.toString(),
+        today,
+      ]);
+    });
+
+    await fetch("/api/assist-roo", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newDataEvents),
+    });
+
+    setFormData((prevState) =>
+      prevState.map((player: any) =>
+        player.label === selectedPlayer?.label
+          ? { ...selectedPlayer, llenado: 1 }
+          : player
+      )
+    );
+    setSelectedPlayer({});
   };
 
   return (
@@ -81,29 +122,23 @@ export function PlayerCard(props) {
                     id="player-list"
                     options={players}
                     sx={{ width: 300 }}
+                    value={selectedPlayer?.label ?? ""}
                     renderInput={(params) => (
                       <TextField {...params} label="Jugador" />
                     )}
-                    // onChange={handleChangeForm}
                     onInputChange={(event, newInputValue: String) => {
-                      setSelectedPlayer(newInputValue);
+                      setSelectedPlayer({
+                        ...formData.find((p) => p.label === newInputValue),
+                      });
                     }}
                   />
                 </div>
 
                 <FormGroup>
-                  {eventList?.length > 0 &&
-                    eventList.map((e, i) => {
-                      const checkEvent = players
-                        .find((p) => p.label === selectedPlayer)
-                        ?.events?.find((event) => event.e === e.event);
-
-                      const checkAssist = eventList.find(
-                        (event) => event.event === e.event
-                      );
-
-                      const playerInfo = players.find(
-                        (player) => player.label === selectedPlayer
+                  {selectedPlayer?.eventsDay?.length > 0 &&
+                    selectedPlayer?.eventsDay?.map((playerEvent, i) => {
+                      const playerInfoEvent = selectedPlayer?.events?.find(
+                        (e) => e.e === playerEvent.event
                       );
 
                       return (
@@ -111,25 +146,18 @@ export function PlayerCard(props) {
                           <FormControlLabel
                             className="pl-2"
                             key={i}
-                            required={
-                              checkAssist?.asistencia === "S" ? true : false
-                            }
+                            required={playerEvent?.asistencia === "S"}
                             disabled={
-                              checkAssist?.asistencia === "N"
-                                ? true
-                                : false || playerInfo?.llenado === 1
-                                ? true
-                                : false
+                              playerEvent?.asistencia === "N" ||
+                              selectedPlayer?.llenado === 1
                             }
-                            // checked={checkEvent?.a === "S" ? true : false}
+                            checked={playerInfoEvent?.a === "S"}
                             control={<Switch />}
-                            label={`${e.event} (${e.horario})`}
-                            onChange={(
-                              event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
+                            label={`${playerEvent?.event} (${playerEvent?.horario})`}
+                            onChange={(event: any) => {
                               handleChangeForm(
                                 "events",
-                                e.event,
+                                playerEvent.event,
                                 event.target.checked
                               );
                             }}
@@ -142,8 +170,15 @@ export function PlayerCard(props) {
             </form>
           </CardContent>
           <CardActions className="flex justify-center p-2">
-            <Button variant="contained" className="text-zinc-100">
-              Enviar Asistencia
+            <Button
+              variant="contained"
+              className="text-zinc-100"
+              disabled={selectedPlayer?.llenado === 1 || !selectedPlayer?.label}
+              onClick={handleSubmit}
+            >
+              {selectedPlayer?.llenado === 1
+                ? "Assistencia Enviada"
+                : "Enviar Asistencia"}
             </Button>
           </CardActions>
         </Card>

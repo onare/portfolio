@@ -1,22 +1,18 @@
-import { Icon } from "@iconify-icon/react";
 import { Navigation } from "../components/nav";
-import { motion } from "framer-motion";
 import getSheetData from "../../lib/getSheetData";
 import { PlayerCard } from "../components/playerCard";
 import { Redis } from "@upstash/redis";
 import { EventCard } from "../components/event-card";
+import { format } from "date-fns";
 
 const redis = Redis.fromEnv();
 
 export default async function FreedomRoo() {
   const playerList = await getSheetData();
-  console.log(playerList);
+  const today = format(new Date(), "EEEE io, yyyy");
 
   const events = await redis.get("freedomroo:events");
   const eventsDetails = await redis.get("freedomroo:eventsdetails");
-
-  //   console.log(events);
-  //   console.log(eventsDetails);
 
   return (
     <div className="relative pb-16">
@@ -26,12 +22,11 @@ export default async function FreedomRoo() {
           <h2 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
             Freedom - ROO LNA
           </h2>
-          <p className="mt-4 text-zinc-400">
+          <p className="mt-3 text-xl text-zinc-200">{today}</p>
+          <p className="mt-1 text-zinc-400">
             Calendario de Eventos y Asistencia
           </p>
         </div>
-        {/* <div className="w-full h-px bg-zinc-800" /> */}
-        <div className="grid grid-cols-1 gap-2 mx-auto"></div>
 
         <EventCard events={events} eventsDetails={eventsDetails} />
 

@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Divider, Grid, Typography } from "@mui/material";
 import { format } from "date-fns";
 
-function EventCardDetails(props) {
+function EventCardDetails(props: any) {
   const { data } = props;
   return (
     <>
@@ -39,17 +27,13 @@ function EventCardDetails(props) {
   );
 }
 
-export function EventCard(props) {
+export function EventCard(props: any) {
   const { events, eventsDetails } = props;
-  console.log(events);
-  console.log(eventsDetails);
-
   const currentDay = format(new Date(), "EEEE");
-  const eventsDay = [...events].filter((e) => e.day === "Saturday");
+  const eventsDay = [...events].filter((e) => e.day === currentDay);
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
-  console.log(eventList);
 
   return (
     <>
