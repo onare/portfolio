@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   description: "Funder of waotools.",
   openGraph: {
     title: "onadev.net",
-    description:
-      "Funder of waotools.",
+    description: "Funder of waotools.",
     url: "https://onadev.net",
     siteName: "onadev",
     images: [
@@ -66,8 +65,9 @@ export default function RootLayout({
         <Analytics />
       </head>
       <body
-        className={`bg-black ${process.env.NODE_ENV === "development" ? "debug-screens" : undefined
-          }`}
+        className={`bg-black ${
+          process.env.NODE_ENV === "development" ? "debug-screens" : undefined
+        }`}
       >
         {children}
       </body>

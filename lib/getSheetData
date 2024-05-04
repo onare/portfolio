@@ -1,0 +1,26 @@
+import { google } from "googleapis";
+import keys from "../gs_key.json";
+
+export default async function getSheetData() {
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: keys.client_email,
+      private_key: keys.private_key,
+    },
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+  });
+
+  const sheets = google.sheets({ version: "v4", auth: await auth.getClient() });
+  const range = "players!A2:A";
+
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range,
+    });
+    return response.data.values;
+  } catch (error) {
+    console.error("Error fetching sheets data: ", error);
+    return [];
+  }
+}
