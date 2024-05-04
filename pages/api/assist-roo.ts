@@ -1,9 +1,16 @@
 import { google } from "googleapis";
-import { NextRequest, NextResponse } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function assistSubmit(req: NextRequest) {
+type ResponseData = {
+  message: string;
+};
+
+export default async function assistSubmit(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
   if (req.method !== "POST") {
-    return new NextResponse("use POST", { status: 405 });
+    return res.status(500).json({ message: "Only post available." });
   }
 
   const body = req.body;
@@ -26,7 +33,7 @@ export default async function assistSubmit(req: NextRequest) {
 
     const resources = body;
     //@ts-ignore
-    sheets.spreadsheets.values.append({
+    const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range,
       valueInputOption: "USER_ENTERED",
@@ -35,11 +42,8 @@ export default async function assistSubmit(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: "Information sent" }, { status: 200 });
+    return res.status(200).json({ message: "Internal Server Error" });
   } catch (error) {
-    return NextResponse.json(
-      { message: "Error sending information" },
-      { status: 500 }
-    );
+    return res.status(500).json({ message: "Error sending information" });
   }
 }

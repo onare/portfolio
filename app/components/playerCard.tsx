@@ -14,7 +14,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import { format } from "date-fns";
 import { useState } from "react";
 
@@ -45,6 +44,8 @@ export function PlayerCard(props: any) {
     eventsDay: [],
     llenado: 0,
   });
+
+  const [sending, setSending] = useState<Boolean>(false);
 
   const handleChangeForm = (input: String, value: String, checked: Boolean) => {
     let newFormData = {};
@@ -81,6 +82,7 @@ export function PlayerCard(props: any) {
   const handleSubmit = async () => {
     if (!selectedPlayer) return;
 
+    setSending(true);
     const newDataEvents: string[] = [];
 
     const today = format(new Date(), "dd/MM/yyyy");
@@ -117,6 +119,8 @@ export function PlayerCard(props: any) {
       eventsDay: [],
       llenado: 0,
     });
+
+    setSending(false);
   };
 
   return (
@@ -207,12 +211,16 @@ export function PlayerCard(props: any) {
                 variant="contained"
                 className="text-zinc-100"
                 disabled={
-                  selectedPlayer?.llenado === 1 || !selectedPlayer?.label
+                  selectedPlayer?.llenado === 1 ||
+                  !selectedPlayer?.label ||
+                  (sending as never)
                 }
                 onClick={handleSubmit}
               >
                 {selectedPlayer?.llenado === 1
                   ? "Assistencia Enviada"
+                  : sending
+                  ? "Enviando..."
                   : "Enviar Asistencia"}
               </Button>
             )}
