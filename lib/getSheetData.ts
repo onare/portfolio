@@ -15,7 +15,7 @@ export default async function getSheetData() {
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
   //@ts-ignore
-  const sheets = google.sheets({ version: "v4", auth: await auth.getClient() });
+  const sheets = google.sheets({ auth, version: "v4" });
   const range = "players!B2:G";
 
   try {
@@ -25,7 +25,7 @@ export default async function getSheetData() {
       range,
     });
 
-    if (response?.data?.values?.length) {
+    if (response?.data?.values) {
       response.data.values?.forEach((value) => {
         const newObject = {
           label: value[0],
@@ -40,9 +40,10 @@ export default async function getSheetData() {
         list.push(newObject as never);
       });
     }
-
+    console.log("data fetched");
     return list;
   } catch (error) {
+    console.log(error);
     return [];
   }
 }
