@@ -1,5 +1,11 @@
 import { google } from "googleapis";
 
+interface EventList {
+  label: string;
+  events: Array<any>;
+  llenado: number;
+}
+
 export default async function getSheetData() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -21,7 +27,7 @@ export default async function getSheetData() {
 
     if (response?.data?.values?.length) {
       response.data.values?.forEach((value) => {
-        list.push({
+        const newObject = {
           label: value[0],
           events: [
             { e: "Phantom Hunt", a: value[1] },
@@ -30,7 +36,8 @@ export default async function getSheetData() {
             { e: "Time-Space Anomaly", a: value[4] },
           ],
           llenado: +value[5],
-        });
+        } as EventList;
+        list.push(newObject as never);
       });
     }
 

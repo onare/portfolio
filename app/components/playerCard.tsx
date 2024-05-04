@@ -18,6 +18,13 @@ import {
 import { format } from "date-fns";
 import { useState } from "react";
 
+interface Players {
+  label: string;
+  events: Array<any>;
+  eventsDay: Array<any>;
+  llenado: number;
+}
+
 export function PlayerCard(props: any) {
   const { players, events, eventsDetails } = props;
   const currentDay = format(new Date(), "EEEE");
@@ -32,7 +39,12 @@ export function PlayerCard(props: any) {
     }),
   ]);
 
-  const [selectedPlayer, setSelectedPlayer] = useState({});
+  const [selectedPlayer, setSelectedPlayer] = useState<Players>({
+    label: "",
+    events: [],
+    eventsDay: [],
+    llenado: 0,
+  });
 
   const handleChangeForm = (input: String, value: String, checked: Boolean) => {
     let newFormData = {};
@@ -42,13 +54,15 @@ export function PlayerCard(props: any) {
     if (input === "events") {
       const newEvents = [];
       const data = formData?.find((fd) => fd.label === selectedPlayer?.label);
-      const check = data.events?.findIndex((e) => e.e === value);
+      const check = data.events?.findIndex((e: any) => e.e === value);
       if (!check) {
         newEvents.push({ e: value, a: checkedChar });
         newData = newEvents;
       } else {
         const newObject = { e: value, a: checkedChar };
-        newData = data.events.map((obj) => (obj.e === value ? newObject : obj));
+        newData = data.events.map((obj: any) =>
+          obj.e === value ? newObject : obj
+        );
       }
 
       newFormData = { ...data, events: newData };
@@ -72,12 +86,13 @@ export function PlayerCard(props: any) {
     const today = format(new Date(), "dd/MM/yyyy");
 
     selectedPlayer?.events?.forEach((event: any) => {
-      newDataEvents.push([
+      const newEvent: string[] = [
         selectedPlayer.label.toString(),
         event.e.toString(),
         event.a.toString(),
         today,
-      ]);
+      ];
+      newDataEvents.push(newEvent as never);
     });
 
     await fetch("/api/assist-roo", {
@@ -96,7 +111,12 @@ export function PlayerCard(props: any) {
           : player
       )
     );
-    setSelectedPlayer({});
+    setSelectedPlayer({
+      label: "",
+      events: [],
+      eventsDay: [],
+      llenado: 0,
+    });
   };
 
   return (
@@ -176,7 +196,7 @@ export function PlayerCard(props: any) {
                   align="center"
                   sx={{ color: "#3cff3cc7", mt: "8px", fontWeight: "400" }}
                 >
-                  Tu asistencia ya fue REGISTRADA.
+                  Tu asistencia fue REGISTRADA.
                 </Typography>
               </Box>
             )}

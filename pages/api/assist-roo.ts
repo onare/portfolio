@@ -26,7 +26,7 @@ export default async function assistSubmit(req: NextRequest) {
 
     const resources = body;
 
-    await sheets.spreadsheets.values.append({
+    sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range,
       valueInputOption: "USER_ENTERED",
