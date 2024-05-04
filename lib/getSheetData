@@ -11,14 +11,32 @@ export default async function getSheetData() {
   });
 
   const sheets = google.sheets({ version: "v4", auth: await auth.getClient() });
-  const range = "players!A2:A";
+  const range = "players!B2:G";
 
   try {
+    const list = [];
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range,
     });
-    return response.data.values;
+
+    if (response?.data?.values?.length) {
+      response.data.values?.forEach((value) => {
+        list.push({
+          label: value[0],
+          events: [
+            { e: "Phantom Hunt", a: value[1] },
+            { e: "Guild League", a: value[2] },
+            { e: "War of Emperium", a: value[3] },
+            { e: "Time-Space Anomaly", a: value[4] },
+          ],
+          llenado: +value[5],
+        });
+      });
+    }
+
+    console.log(list);
+    return list;
   } catch (error) {
     console.error("Error fetching sheets data: ", error);
     return [];

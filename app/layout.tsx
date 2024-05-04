@@ -3,6 +3,7 @@ import { Inter } from "@next/font/google";
 import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
+import Providers from "./provider";
 
 export const metadata: Metadata = {
   title: {
@@ -69,7 +70,7 @@ export default function RootLayout({
           process.env.NODE_ENV === "development" ? "debug-screens" : undefined
         }`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
