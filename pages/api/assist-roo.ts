@@ -25,7 +25,7 @@ export default async function assistSubmit(req: NextRequest) {
     const sheets = google.sheets({ auth, version: "v4" });
 
     const resources = body;
-
+    //@ts-ignore
     sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range,

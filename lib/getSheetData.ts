@@ -14,12 +14,12 @@ export default async function getSheetData() {
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
-
+  //@ts-ignore
   const sheets = google.sheets({ version: "v4", auth: await auth.getClient() });
   const range = "players!B2:G";
 
   try {
-    const list = [];
+    const list: string[] = [];
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range,
