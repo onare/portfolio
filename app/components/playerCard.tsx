@@ -56,7 +56,8 @@ export function PlayerCard(props: any) {
       const newEvents = [];
       const data = formData?.find((fd) => fd.label === selectedPlayer?.label);
       const check = data.events?.findIndex((e: any) => e.e === value);
-      if (!check) {
+
+      if (check < 0) {
         newEvents.push({ e: value, a: checkedChar });
         newData = newEvents;
       } else {
@@ -170,7 +171,7 @@ export function PlayerCard(props: any) {
                         <>
                           <FormControlLabel
                             className="pl-2"
-                            key={i}
+                            key={`${selectedPlayer?.label}-${i}`}
                             required={playerEvent?.asistencia === "S"}
                             disabled={
                               playerEvent?.asistencia === "N" ||
