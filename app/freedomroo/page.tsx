@@ -9,7 +9,7 @@ const redis = Redis.fromEnv();
 
 export default async function FreedomRoo() {
   const playerList = await getSheetData();
-  const today = format(new Date(), "EEEE io, yyyy");
+  const today = format(new Date(), "EEEE Lo, yyyy");
 
   const events = await redis.get("freedomroo:events");
   const eventsDetails = await redis.get("freedomroo:eventsdetails");
