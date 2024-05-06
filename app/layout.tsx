@@ -4,6 +4,7 @@ import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 import Providers from "./provider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: {
@@ -71,6 +72,7 @@ export default function RootLayout({
         }`}
       >
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

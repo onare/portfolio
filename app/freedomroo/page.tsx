@@ -1,15 +1,16 @@
 import { Navigation } from "../components/nav";
 import getSheetData from "../../lib/getSheetData";
-import { PlayerCard } from "../components/playerCard";
+import { PlayerCard } from "../components/player-card";
 import { Redis } from "@upstash/redis";
 import { EventCard } from "../components/event-card";
 import { format } from "date-fns";
+import { UserLogin } from "../components/user-login-";
 
 const redis = Redis.fromEnv();
 
 export default async function FreedomRoo() {
   const playerList = await getSheetData();
-  const today = format(new Date(), "EEEE Lo, yyyy");
+  const today = format(new Date(), "EEEE do, yyyy");
 
   const events = await redis.get("freedomroo:events");
   const eventsDetails = await redis.get("freedomroo:eventsdetails");
@@ -26,6 +27,7 @@ export default async function FreedomRoo() {
           <p className="mt-1 text-zinc-400">
             Calendario de Eventos y Asistencia
           </p>
+          <UserLogin players={playerList} />
         </div>
 
         <EventCard events={events} eventsDetails={eventsDetails} />
