@@ -27,47 +27,28 @@ interface Players {
 }
 
 export function PlayerCard(props: any) {
-  const { players, events, eventsDetails } = props;
+  const { player, players, events, eventsDetails } = props;
   const currentDay = format(new Date(), "EEEE");
   const eventsDay = [...events].filter((e) => e.day === currentDay);
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
+  const playerInfo = {
+    ...players?.find((p: any) => p.label === player),
+    eventsDay: eventList || [],
+  };
+
   const eventsWithAssist = eventList
     .map((event) => (event.asistencia === "S" ? 1 : 0))
     .reduce((acc, cur): any => acc + cur, 0);
-
-  const [formData, setFormData] = useState([
-    ...players.map((player: any) => {
-      return { ...player, eventsDay: eventList || [] };
-    }),
-  ]);
-
-  const [selectedPlayer, setSelectedPlayer] = useState<Players>({
-    email: "",
-    label: "",
-    events: [],
-    eventsDay: [],
-    llenado: 0,
-  });
-
   const [sending, setSending] = useState<Boolean>(false);
+  const [formData, setFormData] = useState([{ ...playerInfo }]);
+  const [selectedPlayer, setSelectedPlayer] = useState({ ...playerInfo });
 
   useEffect(() => {
-    let saved: string = "";
-
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      saved = (localStorage.getItem("freedomUser") as never) || "";
-      setFormData([
-        ...players
-          ?.filter((lbl: any) => lbl.label === saved)
-          .map((player: any) => {
-            return { ...player, eventsDay: eventList || [] };
-          }),
-      ]);
-    }
-  }, []);
+    setFormData([{ ...playerInfo }]);
+    setSelectedPlayer({ ...playerInfo });
+  }, [player]);
 
   const handleChangeForm = (input: String, value: String, checked: Boolean) => {
     let newFormData = {};
@@ -107,7 +88,6 @@ export function PlayerCard(props: any) {
 
     setSending(true);
     const newDataEvents: string[] = [];
-
     const today = format(new Date(), "dd/MM/yyyy");
 
     selectedPlayer?.events?.forEach((event: any) => {
@@ -136,13 +116,8 @@ export function PlayerCard(props: any) {
           : player
       )
     );
-    setSelectedPlayer({
-      email: "",
-      label: "",
-      events: [],
-      eventsDay: [],
-      llenado: 0,
-    });
+
+    setSelectedPlayer({ ...selectedPlayer, llenado: 1 });
 
     setSending(false);
   };
@@ -156,69 +131,70 @@ export function PlayerCard(props: any) {
         {eventsWithAssist > 0 ? (
           <Card className="rounded-lg border bg-card text-card-foreground shadow-sm w-[350px]">
             <CardContent>
-              <form className="space-y-4  mt-4">
-                <div className="grid w-full items-center gap-4">
-                  <Typography
-                    variant="body2"
-                    className="mb-1"
-                    color="text.secondary"
-                  >
-                    Para poder poner tu asistencia, favor seleccionar jugador y
-                    los eventos que participaras.
-                  </Typography>
-                  <div className="flex flex-col ">
-                    <Autocomplete
-                      disablePortal
-                      id="player-list"
-                      options={formData}
-                      // defaultValue={}
-                      sx={{ width: 300 }}
-                      value={selectedPlayer?.label ?? ""}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Jugador" />
-                      )}
-                      onInputChange={(event, newInputValue: String) => {
-                        setSelectedPlayer({
-                          ...formData.find((p) => p.label === newInputValue),
-                        });
-                      }}
-                    />
+              {selectedPlayer?.llenado === 0 && (
+                <form className="space-y-4  mt-4">
+                  <div className="grid w-full items-center gap-4">
+                    <Typography
+                      variant="body2"
+                      className="mb-1"
+                      color="text.secondary"
+                    >
+                      Para poder poner tu asistencia, favor seleccionar jugador
+                      y los eventos que participaras.
+                    </Typography>
+                    <div className="flex flex-col ">
+                      <Autocomplete
+                        disablePortal
+                        id="player-list"
+                        options={formData}
+                        // defaultValue={}
+                        sx={{ width: 300 }}
+                        value={player ?? ""}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Jugador" />
+                        )}
+                        onInputChange={(event, newInputValue: String) => {}}
+                      />
+                    </div>
+
+                    <FormGroup>
+                      {selectedPlayer?.eventsDay?.length > 0 &&
+                        selectedPlayer?.eventsDay?.map(
+                          (playerEvent: any, i: any) => {
+                            const playerInfoEvent =
+                              selectedPlayer?.events?.find(
+                                (e: any) => e.e === playerEvent.event
+                              );
+
+                            return (
+                              <>
+                                <FormControlLabel
+                                  className="pl-2"
+                                  key={`${i}-${selectedPlayer?.label}`}
+                                  required={playerEvent?.asistencia === "S"}
+                                  disabled={
+                                    playerEvent?.asistencia === "N" ||
+                                    selectedPlayer?.llenado === 1
+                                  }
+                                  checked={playerInfoEvent?.a === "S"}
+                                  control={<Switch />}
+                                  label={`${playerEvent?.event} (${playerEvent?.horario})`}
+                                  onChange={(event: any) => {
+                                    handleChangeForm(
+                                      "events",
+                                      playerEvent.event,
+                                      event.target.checked
+                                    );
+                                  }}
+                                />
+                              </>
+                            );
+                          }
+                        )}
+                    </FormGroup>
                   </div>
-
-                  <FormGroup>
-                    {selectedPlayer?.eventsDay?.length > 0 &&
-                      selectedPlayer?.eventsDay?.map((playerEvent, i) => {
-                        const playerInfoEvent = selectedPlayer?.events?.find(
-                          (e) => e.e === playerEvent.event
-                        );
-
-                        return (
-                          <>
-                            <FormControlLabel
-                              className="pl-2"
-                              key={`${i}-${selectedPlayer?.label}`}
-                              required={playerEvent?.asistencia === "S"}
-                              disabled={
-                                playerEvent?.asistencia === "N" ||
-                                selectedPlayer?.llenado === 1
-                              }
-                              checked={playerInfoEvent?.a === "S"}
-                              control={<Switch />}
-                              label={`${playerEvent?.event} (${playerEvent?.horario})`}
-                              onChange={(event: any) => {
-                                handleChangeForm(
-                                  "events",
-                                  playerEvent.event,
-                                  event.target.checked
-                                );
-                              }}
-                            />
-                          </>
-                        );
-                      })}
-                  </FormGroup>
-                </div>
-              </form>
+                </form>
+              )}
               {selectedPlayer?.llenado === 1 && (
                 <Box>
                   <Typography

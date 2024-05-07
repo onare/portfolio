@@ -5,6 +5,7 @@ import { Redis } from "@upstash/redis";
 import { EventCard } from "../components/event-card";
 import { format } from "date-fns";
 import { UserLogin } from "../components/user-login-";
+import CardWrapper from "../components/card-wrapper";
 
 const redis = Redis.fromEnv();
 
@@ -27,22 +28,14 @@ export default async function FreedomRoo() {
           <p className="mt-1 text-zinc-400">
             Calendario de Eventos y Asistencia
           </p>
-          <UserLogin players={playerList} />
+          {/* <UserLogin players={playerList} /> */}
         </div>
 
-        <EventCard
+        <CardWrapper
           players={playerList}
           events={events}
           eventsDetails={eventsDetails}
         />
-
-        <div className="grid grid-cols-1 gap-8 mx-auto">
-          <PlayerCard
-            players={playerList}
-            events={events}
-            eventsDetails={eventsDetails}
-          />
-        </div>
         <div className="hidden w-full h-px md:block bg-zinc-800" />
       </div>
     </div>

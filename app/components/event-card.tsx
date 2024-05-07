@@ -2,25 +2,20 @@
 
 import { Card, CardContent, Divider, Grid, Typography } from "@mui/material";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function EventCardDetails(props: any) {
   let assistColor;
   const { data, player } = props;
-  console.log(data);
-
   const checkAssist = player?.events?.find(
-    (event: any) => event.e === data?.event
+    (event: any) => event.e === data?.event && player?.llenado === 1
   );
 
-  console.log(checkAssist);
   if (checkAssist) {
     assistColor = "";
     if (checkAssist?.a === "S") assistColor = "#3ac14bc9";
     if (checkAssist?.a === "N") assistColor = "#ff0f0fb3";
   }
-
-  console.log(assistColor);
 
   return (
     <>
@@ -57,34 +52,13 @@ function EventCardDetails(props: any) {
 }
 
 export function EventCard(props: any) {
-  const { players, events, eventsDetails } = props;
-  const [loading, setLoading] = useState<boolean>(true);
-  const [player, setPlayer] = useState<any>({});
-
+  const { player, players, events, eventsDetails } = props;
+  const playerInfo = players?.find((p: any) => p.label === player);
   const currentDay = format(new Date(), "EEEE");
   const eventsDay = [...events].filter((e) => e.day === currentDay);
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
-
-  useEffect(() => {
-    let saved: string = "";
-
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      saved = (localStorage.getItem("freedomUser") as never) || "";
-    }
-
-    if (saved) {
-      const checkIfExist = players.find((p: any) => p.label === saved);
-      if (checkIfExist) {
-        setPlayer(checkIfExist);
-      }
-    }
-    // setLoading(false);
-  }, []);
-
-  console.log(player);
 
   return (
     <>
@@ -100,7 +74,7 @@ export function EventCard(props: any) {
         {eventList.map((event) => {
           return (
             <Grid item xs={6} md={3} lg={3} sm={12}>
-              <EventCardDetails data={event} player={player} />
+              <EventCardDetails data={event} player={playerInfo} />
             </Grid>
           );
         })}
