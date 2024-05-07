@@ -30,7 +30,11 @@ export default async function FreedomRoo() {
           <UserLogin players={playerList} />
         </div>
 
-        <EventCard events={events} eventsDetails={eventsDetails} />
+        <EventCard
+          players={playerList}
+          events={events}
+          eventsDetails={eventsDetails}
+        />
 
         <div className="grid grid-cols-1 gap-8 mx-auto">
           <PlayerCard

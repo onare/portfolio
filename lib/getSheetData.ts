@@ -37,7 +37,7 @@ export default async function getSheetData() {
             { e: "War of Emperium", a: value[4] },
             { e: "Time-Space Anomaly", a: value[5] },
           ],
-          llenado: +value[5],
+          llenado: +value[6],
         } as EventList;
         list.push(newObject as never);
       });
