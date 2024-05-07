@@ -65,6 +65,14 @@ export function UserLogin(props: any) {
           color: "#fff",
         },
       });
+    } else {
+      return toast.error("You're not part of Freedom Guild.", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
     }
   };
 
