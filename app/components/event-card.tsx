@@ -2,7 +2,6 @@
 
 import { Card, CardContent, Divider, Grid, Typography } from "@mui/material";
 import { format } from "date-fns";
-import { useEffect } from "react";
 
 function EventCardDetails(props: any) {
   let assistColor;
@@ -10,6 +9,8 @@ function EventCardDetails(props: any) {
   const checkAssist = player?.events?.find(
     (event: any) => event.e === data?.event && player?.llenado === 1
   );
+
+  if (data?.color) assistColor = data?.color;
 
   if (checkAssist) {
     assistColor = "";
@@ -21,7 +22,7 @@ function EventCardDetails(props: any) {
     <>
       <div className="preview flex w-full justify-left items-center">
         <Card
-          className="rounded-lg border bg-card text-card-foreground shadow-sm w-[250px] h-[135px]"
+          className="rounded-lg border bg-card text-card-foreground shadow-sm w-[250px] min-h-[135px]"
           sx={{ borderColor: assistColor }}
         >
           <CardContent>
