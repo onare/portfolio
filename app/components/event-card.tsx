@@ -32,8 +32,9 @@ function EventCardDetails(props: any) {
                   {data?.event}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {data?.horario}
+                  {data?.horario} (Server Time)
                 </Typography>
+
                 {checkAssist && (
                   <Typography
                     variant="body2"
@@ -56,7 +57,7 @@ export function EventCard(props: any) {
   const { player, players, events, eventsDetails } = props;
   const playerInfo = players?.find((p: any) => p.label === player);
   const currentDay = format(new Date(), "EEEE");
-  const eventsDay = [...events].filter((e) => e.day === currentDay);
+  const eventsDay = [...events].filter((e) => e.day === "Sunday");
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
@@ -74,7 +75,7 @@ export function EventCard(props: any) {
       >
         {eventList.map((event) => {
           return (
-            <Grid item xs={6} md={3} lg={3} sm={12}>
+            <Grid key={event?.event} item xs={6} md={3} lg={3} sm={12}>
               <EventCardDetails data={event} player={playerInfo} />
             </Grid>
           );

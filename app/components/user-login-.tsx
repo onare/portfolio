@@ -3,11 +3,7 @@
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   CircularProgress,
-  Divider,
-  Grid,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,6 +12,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { EventCard } from "./event-card";
 import { PlayerCard } from "./player-card";
+import UserProfile from "./user-profile";
 
 export function UserLogin(props: any) {
   const { players, events, eventsDetails } = props;
@@ -79,6 +76,7 @@ export function UserLogin(props: any) {
   const handleChangeUser = () => {
     setShowInput(true);
     setUsername("");
+    localStorage.removeItem("freedomUser");
   };
 
   return (
@@ -134,6 +132,9 @@ export function UserLogin(props: any) {
               </>
             )}
           </div>
+
+          <UserProfile player={username} players={players} />
+
           <EventCard
             player={username}
             players={players}

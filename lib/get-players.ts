@@ -5,9 +5,10 @@ interface EventList {
   label: string;
   events: Array<any>;
   llenado: number;
+  playerId: string;
 }
 
-export default async function getSheetData() {
+export default async function getPlayers() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SHEET_EMAIL,
@@ -17,7 +18,7 @@ export default async function getSheetData() {
   });
   //@ts-ignore
   const sheets = google.sheets({ auth, version: "v4" });
-  const range = "players!A2:G";
+  const range = "players!A2:H";
 
   try {
     const list: string[] = [];
@@ -38,6 +39,7 @@ export default async function getSheetData() {
             { e: "Time-Space Anomaly", a: value[5] },
           ],
           llenado: +value[6],
+          playerId: value[7],
         } as EventList;
         list.push(newObject as never);
       });

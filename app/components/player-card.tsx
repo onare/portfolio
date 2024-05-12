@@ -18,30 +18,34 @@ import { format } from "date-fns";
 import { useEffect } from "react";
 import { useState } from "react";
 
-interface Players {
-  email: string;
-  label: string;
-  events: Array<any>;
-  eventsDay: Array<any>;
-  llenado: number;
-}
-
 export function PlayerCard(props: any) {
   const { player, players, events, eventsDetails } = props;
   const currentDay = format(new Date(), "EEEE");
   const eventsDay = [...events].filter((e) => e.day === currentDay);
-  const eventList = [...eventsDetails].filter(
-    (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
-  );
+  const playerData = players?.find((p: any) => p.label === player) || {
+    events: [],
+  };
+  const eventList = [...eventsDetails]
+    .filter((ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0)
+    ?.filter((ewa) => ewa.asistencia === "S");
+
+  const eventsFiltered = [...playerData?.events].filter((el) => {
+    return eventList.some((f) => {
+      return f.event === el.e;
+    });
+  });
+
   const playerInfo = {
-    ...players?.find((p: any) => p.label === player),
+    ...playerData,
     eventsDay: eventList || [],
+    events: eventsFiltered || [],
+    comentario: "",
   };
 
   const eventsWithAssist = eventList
     .map((event) => (event.asistencia === "S" ? 1 : 0))
     .reduce((acc, cur): any => acc + cur, 0);
-  const [sending, setSending] = useState<Boolean>(false);
+  const [sending, setSending] = useState<boolean>(false);
   const [formData, setFormData] = useState([{ ...playerInfo }]);
   const [selectedPlayer, setSelectedPlayer] = useState({ ...playerInfo });
 
@@ -54,10 +58,11 @@ export function PlayerCard(props: any) {
     let newFormData = {};
     let newData;
     const checkedChar = checked ? "S" : "N";
+    const data = formData?.find((fd) => fd.label === player);
 
     if (input === "events") {
       const newEvents = [];
-      const data = formData?.find((fd) => fd.label === selectedPlayer?.label);
+
       const check = data.events?.findIndex((e: any) => e.e === value);
 
       if (check < 0) {
@@ -74,12 +79,12 @@ export function PlayerCard(props: any) {
     }
 
     const newState = [...formData].map((data) =>
-      data.label === selectedPlayer?.label ? newFormData : data
+      data.label === player ? newFormData : data
     );
 
     setFormData(newState);
     setSelectedPlayer({
-      ...newState.find((p) => p.label === selectedPlayer?.label),
+      ...newState.find((p) => p.label === player),
     });
   };
 
@@ -96,6 +101,7 @@ export function PlayerCard(props: any) {
         event.e.toString(),
         event.a.toString(),
         today,
+        selectedPlayer?.comentario,
       ];
       newDataEvents.push(newEvent as never);
     });
@@ -153,7 +159,7 @@ export function PlayerCard(props: any) {
                         renderInput={(params) => (
                           <TextField {...params} label="Jugador" />
                         )}
-                        onInputChange={(event, newInputValue: String) => {}}
+                        // onInputChange={(event, newInputValue: String) => {}}
                       />
                     </div>
 
@@ -192,6 +198,20 @@ export function PlayerCard(props: any) {
                           }
                         )}
                     </FormGroup>
+
+                    <TextField
+                      id="comentario-multiline"
+                      label="Comentario"
+                      multiline
+                      maxRows={4}
+                      variant="outlined"
+                      onChange={(event: any) => {
+                        setSelectedPlayer((prevState: any) => ({
+                          ...prevState,
+                          comentario: event.target.value,
+                        }));
+                      }}
+                    />
                   </div>
                 </form>
               )}
