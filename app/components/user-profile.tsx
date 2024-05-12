@@ -180,7 +180,7 @@ export default function UserProfile(props: any) {
                   <Button disabled color="warning" variant="contained">
                     Editing profile...
                   </Button>
-                  <Button
+                  {/* <Button
                     color="primary"
                     variant="outlined"
                     disabled={sending}
@@ -199,7 +199,7 @@ export default function UserProfile(props: any) {
                     >
                       CANCEL
                     </Button>
-                  )}
+                  )} */}
                 </Box>
               ) : (
                 <Box sx={{ m: "8px" }}>
@@ -415,6 +415,30 @@ export default function UserProfile(props: any) {
                   )}
                 />
               </Box>
+              {showInputs && (
+                <Box sx={{ m: "8px" }}>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    disabled={sending}
+                    sx={{ ml: "8px", my: "8px" }}
+                    onClick={handleUserUpdate}
+                  >
+                    {sending ? "Saving..." : "SAVE"}
+                  </Button>
+                  {!sending && (
+                    <Button
+                      color="error"
+                      variant="outlined"
+                      disabled={sending}
+                      sx={{ ml: "8px", my: "8px" }}
+                      onClick={() => setShowInputs(!showInputs)}
+                    >
+                      CANCEL
+                    </Button>
+                  )}
+                </Box>
+              )}
             </Box>
           )}
         </>
