@@ -150,16 +150,6 @@ export default function UserProfile(props: any) {
       body: JSON.stringify(dataToSend),
     });
 
-    // setFormData((prevState) =>
-    //   prevState.map((player: any) =>
-    //     player.label === selectedPlayer?.label
-    //       ? { ...selectedPlayer, llenado: 1 }
-    //       : player
-    //   )
-    // );
-
-    // setSelectedPlayer({ ...selectedPlayer, llenado: 1 });
-
     setSending(false);
     setShowInputs(!showInputs);
     return toast.success("Information updated!", {
@@ -237,7 +227,7 @@ export default function UserProfile(props: any) {
                     ),
                   }}
                   onChange={(e: any) => {
-                    if (e.target.value?.length > 12) {
+                    if (e.target.value?.length > 16) {
                       return toast.error(
                         "Max length reached for Whastapp.",
                         toastStyle.error
