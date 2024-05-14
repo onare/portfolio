@@ -57,7 +57,7 @@ export function EventCard(props: any) {
   const { player, players, events, eventsDetails } = props;
   const playerInfo = players?.find((p: any) => p.label === player);
   const currentDay = format(new Date(), "EEEE");
-  const eventsDay = [...events].filter((e) => e.day === "Sunday");
+  const eventsDay = [...events].filter((e) => e.day === currentDay);
   const eventList = [...eventsDetails].filter(
     (ed) => eventsDay[0]?.events?.indexOf(ed.event) >= 0
   );
