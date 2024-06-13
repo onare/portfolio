@@ -5,7 +5,7 @@ import {
   Button,
   CircularProgress,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -46,8 +46,8 @@ export function UserLogin(props: any) {
         style: {
           borderRadius: "10px",
           background: "#333",
-          color: "#fff",
-        },
+          color: "#fff"
+        }
       });
     }
 
@@ -59,16 +59,16 @@ export function UserLogin(props: any) {
         style: {
           borderRadius: "10px",
           background: "#333",
-          color: "#fff",
-        },
+          color: "#fff"
+        }
       });
     } else {
       return toast.error("You're not part of Freedom Guild.", {
         style: {
           borderRadius: "10px",
           background: "#333",
-          color: "#fff",
-        },
+          color: "#fff"
+        }
       });
     }
   };
@@ -133,15 +133,6 @@ export function UserLogin(props: any) {
             )}
           </div>
 
-          <UserProfile player={username} players={players} />
-
-          <EventCard
-            player={username}
-            players={players}
-            events={events}
-            eventsDetails={eventsDetails}
-          />
-
           <div className="grid grid-cols-1 gap-8 mx-auto">
             <PlayerCard
               player={username}
@@ -150,6 +141,15 @@ export function UserLogin(props: any) {
               eventsDetails={eventsDetails}
             />
           </div>
+
+          <EventCard
+            player={username}
+            players={players}
+            events={events}
+            eventsDetails={eventsDetails}
+          />
+
+          <UserProfile player={username} players={players} />
         </>
       )}
     </>

@@ -10,7 +10,7 @@ import {
   InputAdornment,
   MenuItem,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -18,26 +18,30 @@ import toast from "react-hot-toast";
 
 const idiomas = [
   {
-    label: "Español",
+    label: "Español"
   },
   {
-    label: "English",
+    label: "English"
   },
   {
-    label: "Portugues",
-  },
+    label: "Portugues"
+  }
 ];
 
 const jobs = [
   { label: "AssaCross" },
-  { label: "Champ" },
+  { label: "Champion" },
+  { label: "Creator" },
+  { label: "Gypsy" },
   { label: "HP (DPS)" },
   { label: "HP (Support)" },
   { label: "HW" },
   { label: "LK (DPS)" },
   { label: "LK (Tank)" },
+  { label: "Minstrel" },
+  { label: "Paladin" },
   { label: "Sniper" },
-  { label: "WS" },
+  { label: "WS" }
 ];
 
 const toastStyle = {
@@ -45,16 +49,16 @@ const toastStyle = {
     style: {
       borderRadius: "10px",
       background: "#333",
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   success: {
     style: {
       borderRadius: "10px",
       background: "#333",
-      color: "#fff",
-    },
-  },
+      color: "#fff"
+    }
+  }
 };
 
 const playerDefault = {
@@ -64,7 +68,7 @@ const playerDefault = {
   idioma: "",
   job: "",
   horario: { desde: "00:00", hasta: "23:30" },
-  players: [],
+  players: []
 };
 
 function getTimes(start: string, end: string) {
@@ -91,7 +95,7 @@ export default function UserProfile(props: any) {
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<any>({
     ...playerDefault,
-    player: player,
+    player: player
   });
   const playerId = players?.find((p: any) => p.label === player)?.playerId;
 
@@ -103,9 +107,9 @@ export default function UserProfile(props: any) {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ userCell: playerId }),
+        body: JSON.stringify({ userCell: playerId })
       })
         .then((res) => res.json())
         .then((resData) => {
@@ -136,18 +140,18 @@ export default function UserProfile(props: any) {
           userData.horario.desde,
           userData.horario.hasta,
           userData?.players?.map((p: any) => p.label).join(","),
-          today,
-        ],
-      ],
+          today
+        ]
+      ]
     };
 
     await fetch("/api/user", {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(dataToSend),
+      body: JSON.stringify(dataToSend)
     });
 
     setSending(false);
@@ -156,8 +160,8 @@ export default function UserProfile(props: any) {
       style: {
         borderRadius: "10px",
         background: "#333",
-        color: "#fff",
-      },
+        color: "#fff"
+      }
     });
   };
 
@@ -172,7 +176,7 @@ export default function UserProfile(props: any) {
             <Box
               sx={{
                 mt: "-16px",
-                "& .MuiTextField-root": { m: 1, width: "25ch" },
+                "& .MuiTextField-root": { m: 1, width: "25ch" }
               }}
             >
               {showInputs ? (
@@ -180,26 +184,6 @@ export default function UserProfile(props: any) {
                   <Button disabled color="warning" variant="contained">
                     Editing profile...
                   </Button>
-                  {/* <Button
-                    color="primary"
-                    variant="outlined"
-                    disabled={sending}
-                    sx={{ ml: "8px", my: "8px" }}
-                    onClick={handleUserUpdate}
-                  >
-                    {sending ? "Saving..." : "SAVE"}
-                  </Button>
-                  {!sending && (
-                    <Button
-                      color="error"
-                      variant="outlined"
-                      disabled={sending}
-                      sx={{ ml: "8px", my: "8px" }}
-                      onClick={() => setShowInputs(!showInputs)}
-                    >
-                      CANCEL
-                    </Button>
-                  )} */}
                 </Box>
               ) : (
                 <Box sx={{ m: "8px" }}>
@@ -224,7 +208,7 @@ export default function UserProfile(props: any) {
                       <InputAdornment position="start">
                         <Icon icon="logos:whatsapp-icon" />
                       </InputAdornment>
-                    ),
+                    )
                   }}
                   onChange={(e: any) => {
                     if (e.target.value?.length > 16) {
@@ -233,10 +217,10 @@ export default function UserProfile(props: any) {
                         toastStyle.error
                       );
                     }
-
+                    console.log(+e.target.value.trim(""));
                     setUserData((prev: any) => ({
                       ...prev,
-                      whatsapp: e.target.value,
+                      whatsapp: e.target.value.trim("").replace("+", "")
                     }));
                   }}
                 />
@@ -251,7 +235,7 @@ export default function UserProfile(props: any) {
                       <InputAdornment position="start">
                         <Icon icon="logos:discord-icon" />
                       </InputAdornment>
-                    ),
+                    )
                   }}
                   onChange={(e: any) => {
                     if (e.target.value?.length > 15) {
@@ -263,7 +247,7 @@ export default function UserProfile(props: any) {
 
                     setUserData((prev: any) => ({
                       ...prev,
-                      discord: e.target.value,
+                      discord: e.target.value
                     }));
                   }}
                 />
@@ -277,7 +261,7 @@ export default function UserProfile(props: any) {
                   onChange={(e: any) => {
                     setUserData((prev: any) => ({
                       ...prev,
-                      idioma: e.target.value,
+                      idioma: e.target.value
                     }));
                   }}
                 >
@@ -297,7 +281,7 @@ export default function UserProfile(props: any) {
                   onChange={(e: any) => {
                     setUserData((prev: any) => ({
                       ...prev,
-                      job: e.target.value,
+                      job: e.target.value
                     }));
                   }}
                 >
@@ -311,7 +295,7 @@ export default function UserProfile(props: any) {
                 <Box
                   sx={{
                     "& .MuiTextField-root": { m: 1, width: "10ch" },
-                    maxWidth: "28ch",
+                    maxWidth: "28ch"
                   }}
                 >
                   <Box
@@ -323,7 +307,7 @@ export default function UserProfile(props: any) {
                       border: "solid 1px #37373a",
                       borderRadius: "4px",
                       p: "8px",
-                      m: "8px",
+                      m: "8px"
                     }}
                   >
                     <Typography
@@ -347,8 +331,8 @@ export default function UserProfile(props: any) {
                             ...prev,
                             horario: {
                               ...userData?.horario,
-                              desde: e.target.value,
-                            },
+                              desde: e.target.value
+                            }
                           }));
                         }}
                       >
@@ -370,8 +354,8 @@ export default function UserProfile(props: any) {
                             ...prev,
                             horario: {
                               ...userData?.horario,
-                              hasta: e.target.value,
-                            },
+                              hasta: e.target.value
+                            }
                           }));
                         }}
                       >
@@ -402,7 +386,7 @@ export default function UserProfile(props: any) {
                     }
                     setUserData((prev: any) => ({
                       ...prev,
-                      players: values,
+                      players: values
                     }));
                   }}
                   renderInput={(params) => (
