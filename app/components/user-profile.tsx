@@ -29,19 +29,20 @@ const idiomas = [
 ];
 
 const jobs = [
-  { label: "AssaCross" },
-  { label: "Champion" },
-  { label: "Creator" },
-  { label: "Gypsy" },
-  { label: "HP (DPS)" },
-  { label: "HP (Support)" },
-  { label: "HW" },
-  { label: "LK (DPS)" },
-  { label: "LK (Tank)" },
-  { label: "Minstrel" },
-  { label: "Paladin" },
-  { label: "Sniper" },
-  { label: "WS" }
+  { label: "Archbishop" },
+  { label: "Doram" },
+  { label: "Guillotine Cross" },
+  { label: "Genetic" },
+  { label: "Mechanic" },
+  { label: "Maestro" },
+  { label: "Ranger" },
+  { label: "Royal Guard" },
+  { label: "Rune Knight" },
+  { label: "Shadow Chaser" },
+  { label: "Shura" },
+  { label: "Sorcerer" },
+  { label: "Wanderer" },
+  { label: "Warlock" }
 ];
 
 const toastStyle = {
