@@ -1,0 +1,55 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+	"files": {
+		"includes": [
+			"**",
+			"!node_modules",
+			"!.next",
+			"!.velite",
+			"!dist",
+			"!**/*.css"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"css": {
+		"parser": {
+			"cssModules": false
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off"
+			},
+			"style": {
+				"useImportType": "off",
+				"noNonNullAssertion": "off"
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "off",
+				"noStaticElementInteractions": "off"
+			},
+			"performance": {
+				"noImgElement": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"noInvalidUseBeforeDeclaration": "off",
+				"noUnusedFunctionParameters": "off"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.css"],
+			"linter": { "enabled": false },
+			"formatter": { "enabled": false }
+		}
+	]
+}

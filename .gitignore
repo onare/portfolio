@@ -35,4 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.contentlayer
+# velite content layer artifact
+.velite
+
+# velite-managed static assets fingerprinted into public/static
+/public/static

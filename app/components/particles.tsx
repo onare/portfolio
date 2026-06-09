@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useMousePosition } from "@/util/mouse";
 
 interface ParticlesProps {
@@ -38,14 +38,17 @@ export default function Particles({
 		return () => {
 			window.removeEventListener("resize", initCanvas);
 		};
+		// biome-ignore lint/correctness/useExhaustiveDependencies: stable refs declared below
 	}, []);
 
 	useEffect(() => {
 		onMouseMove();
+		// biome-ignore lint/correctness/useExhaustiveDependencies: react to mouse only
 	}, [mousePosition.x, mousePosition.y]);
 
 	useEffect(() => {
 		initCanvas();
+		// biome-ignore lint/correctness/useExhaustiveDependencies: react to refresh only
 	}, [refresh]);
 
 	const initCanvas = () => {

@@ -1,6 +1,6 @@
-import type { Project } from "@/.contentlayer/generated";
+import { Eye } from "lucide-react";
 import Link from "next/link";
-import { Eye, View } from "lucide-react";
+import type { Project } from "@/.velite";
 
 type Props = {
 	project: Project;
