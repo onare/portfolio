@@ -1,12 +1,13 @@
 "use client";
-import { Github, Linkedin, Mail, Smartphone } from "lucide-react";
+import { Icon } from "@iconify/react";
+import { Mail } from "lucide-react";
 import Link from "next/link";
-import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
+import { Navigation } from "../components/nav";
 
 const socials = [
 	{
-		icon: <Github size={20} />,
+		icon: <Icon icon="lucide:github" width={20} height={20} />,
 		href: "https://github.com/onare",
 		label: "Github",
 		handle: "oNare",
@@ -17,14 +18,12 @@ const socials = [
 		label: "Email",
 		handle: "onare@onadev.net",
 	},
-	
 	{
-		icon: <Linkedin size={20} />,
-		href: 'https://www.linkedin.com/in/onaare/',
+		icon: <Icon icon="lucide:linkedin" width={20} height={20} />,
+		href: "https://www.linkedin.com/in/onaare/",
 		label: "Linkedin",
-		handle: '@onaare'
-	}
-	
+		handle: "@onaare",
+	},
 ];
 
 export default function Example() {
@@ -34,7 +33,7 @@ export default function Example() {
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
 				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
 					{socials.map((s) => (
-						<Card>
+						<Card key={s.href}>
 							<Link
 								href={s.href}
 								target="_blank"

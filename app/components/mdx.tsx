@@ -1,13 +1,14 @@
 // @ts-nocheck
-import * as React from "react";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useMDXComponent } from "next-contentlayer/hooks";
+import * as runtime from "react/jsx-runtime";
 
 function clsx(...args: any) {
 	return args.filter(Boolean).join(" ");
 }
-const components = {
+
+const sharedComponents = {
 	h1: ({ className, ...props }) => (
 		<h1
 			className={clsx(
@@ -95,12 +96,7 @@ const components = {
 			{...props}
 		/>
 	),
-	img: ({
-		className,
-		alt,
-		...props
-	}: React.ImgHTMLAttributes<HTMLImageElement>) => (
-		// eslint-disable-next-line @next/next/no-img-element
+	img: ({ className, alt, ...props }) => (
 		<img
 			className={clsx("rounded-md border border-zinc-200", className)}
 			alt={alt}
@@ -110,12 +106,12 @@ const components = {
 	hr: ({ ...props }) => (
 		<hr className="my-4 border-zinc-200 md:my-8" {...props} />
 	),
-	table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
+	table: ({ className, ...props }) => (
 		<div className="w-full my-6 overflow-y-auto">
 			<table className={clsx("w-full", className)} {...props} />
 		</div>
 	),
-	tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
+	tr: ({ className, ...props }) => (
 		<tr
 			className={clsx(
 				"m-0 border-t border-zinc-300 p-0 even:bg-zinc-100",
@@ -163,16 +159,21 @@ const components = {
 	Image,
 };
 
+function getMDXComponent(code: string) {
+	const ctor = Function;
+	const fn = ctor(code);
+	return fn({ ...runtime }).default;
+}
+
 interface MdxProps {
 	code: string;
 }
 
 export function Mdx({ code }: MdxProps) {
-	const Component = useMDXComponent(code);
-
+	const Component = getMDXComponent(code);
 	return (
 		<div className="mdx">
-			<Component components={components} />
+			<Component components={sharedComponents} />
 		</div>
 	);
 }

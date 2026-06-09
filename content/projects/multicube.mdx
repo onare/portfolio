@@ -1,0 +1,31 @@
+---
+title: MultiCube
+description: A modular enterprise platform built with Next.js 16 and React 19 — service desk, project management, quality, inventory, reports and more, unified under one ecosystem.
+date: "2026-06-01"
+url: https://multicube.app
+published: true
+---
+
+
+[![](/images/landing/multicube.png)](https://multicube.app)
+
+MultiCube is a multi-module business platform — what we call an *ecosistema tecnológico*. Instead of one monolith, it groups several focused "cubes" that share the same identity, navigation and data layer:
+
+- **DeskCube** — service desk, tickets, SLA, macros, external portal
+- **TaskCube** — projects, sprints, work items, time tracking
+- **QualityCube** — quality workflows, documents, audits, risk and continuity
+- **AssetCube** — inventory, devices, mobile fleet, on/off-boarding
+- **DevCube** — public API gateway, keys, webhooks, OpenAPI playground
+- **ToolCube** — software licenses and collaborator badges
+- **HelpCube** — manuals, guides, glossary, tours, public help portal
+- **ReportCube** — executive dashboards on top of Metabase
+
+Tech stack:
+- Next.js 16 (App Router) + React 19
+- TypeScript
+- MongoDB 7 + Mongoose
+- NextAuth.js v5
+- TipTap rich editor
+- Docker multi-stage, Kubernetes (nginx ingress, cert-manager)
+
+Hybrid CalVer + SemVer versioning. One source of truth (`VERSIONS.json`) keeps every cube and the README in sync.
