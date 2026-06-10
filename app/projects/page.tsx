@@ -1,5 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { Eye } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { projects as allProjects } from "@/.velite";
 import { Card } from "../components/card";
@@ -34,21 +35,9 @@ export default async function ProjectsPage() {
 	);
 
 	const featured = allProjects.find((project) => project.slug === "multicube")!;
-	const top2 = allProjects.find((project) => project.slug === "waotools")!;
-	const top3 = allProjects.find((project) => project.slug === "waotoolsv1")!;
-	const _sorted = allProjects
-		.filter((p) => p.published)
-		.filter(
-			(project) =>
-				project.slug !== featured.slug &&
-				project.slug !== top2.slug &&
-				project.slug !== top3.slug,
-		)
-		.sort(
-			(a, b) =>
-				new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
-				new Date(a.date ?? Number.POSITIVE_INFINITY).getTime(),
-		);
+	const top2 = allProjects.find((project) => project.slug === "vital")!;
+	const top3 = allProjects.find((project) => project.slug === "waotools")!;
+	const top4 = allProjects.find((project) => project.slug === "waotoolsv1")!;
 
 	return (
 		<div className="relative pb-16">
@@ -66,8 +55,24 @@ export default async function ProjectsPage() {
 
 				<div className="grid grid-cols-1 gap-8 mx-auto lg:grid-cols-2 ">
 					<Card>
-						<Link href={`/projects/${featured.slug}`}>
-							<article className="relative w-full h-full p-4 md:p-8">
+						<Link
+							href={`/projects/${featured.slug}`}
+							className="flex flex-col h-full"
+						>
+							{featured.cover && (
+								<div className="relative w-full aspect-video overflow-hidden bg-zinc-900">
+									<Image
+										src={featured.cover}
+										alt=""
+										fill
+										priority
+										sizes="(max-width: 1024px) 100vw, 50vw"
+										className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+									/>
+									<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+								</div>
+							)}
+							<article className="relative w-full flex-1 p-4 md:p-8">
 								<div className="flex items-center justify-between gap-2">
 									<div className="text-xs text-zinc-100 ">
 										{featured.date ? (
@@ -97,17 +102,15 @@ export default async function ProjectsPage() {
 								<p className="my-2 mb-6 leading-8 duration-150 text-zinc-400 group-hover:text-zinc-300 ">
 									{featured.description}
 								</p>
-								<div className="absolute bottom-4 md:bottom-8">
-									<p className="hidden text-zinc-200 hover:text-zinc-50 lg:block">
-										Read more <span aria-hidden="true">&rarr;</span>
-									</p>
-								</div>
+								<p className="hidden text-zinc-200 hover:text-zinc-50 lg:block">
+									Read more <span aria-hidden="true">&rarr;</span>
+								</p>
 							</article>
 						</Link>
 					</Card>
 
 					<div className="flex flex-col w-full gap-8 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0 ">
-						{[top2, top3].map((project) => (
+						{[top2, top3, top4].map((project) => (
 							<Card key={project.slug}>
 								<Article project={project} views={views[project.slug] ?? 0} />
 							</Card>

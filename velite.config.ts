@@ -14,6 +14,7 @@ const projects = defineCollection({
 			date: s.isodate().optional(),
 			url: s.string().optional(),
 			repository: s.string().optional(),
+			cover: s.string().optional(),
 			published: s.boolean().default(false),
 			slug: s.path(),
 			code: s.mdx(),
